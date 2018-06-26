@@ -1,0 +1,248 @@
+#SC InstaStory  by Wildan
+
+elif text.lower().startswith("instastory "):
+                	dan = text.replace("instastory ","")
+                	data = requests.get("http://rahandiapi.herokuapp.com/instastory/{}?key=betakey".format(dan)).json()
+                	if data["find"] == True:
+                		for story in data["url"]:
+                			if story["tipe"] == 1:line.sendImageWithURL(to, story["link"])
+                			else:line.sendVideoWithURL(to, story["link"])
+                	else:line.sendMessage(to, "Username {} tidak ditemukan.".format(str(dan)))
+
+                            elif cmd == "changedual":
+                            	if msg.contentType == 0:
+                                    settings["ChangeVideoProfilevid"] = True
+                                    client.sendMessage(to, "Send Videonnya")
+                                    if msg.contentType == 2:
+                                        path = client.downloadObjectMsg(msg_id,saveAs="tmp/vid.bin")
+                                        settings["ChangeVideoProfilevid"] = False
+                                        settings["ChangeVideoProfilePicture"] = True
+                                        client.sendMessage(to, "Send Gambarnya")
+                                        if msg.contentType == 1:
+                                            path = client.downloadObjectMsg(msg_id)
+                                            settings["ChangeVideoProfilePicture"] = False
+                                            client.updateProfileVideoPicture(path)
+                                            client.sendMessage(to, "success")
+
+#SC Tag via ID Line
+
+elif text.lower().startswith("tagid: "):
+                	#Script Tag via ID by Wildan
+                	try:
+                		id = text.replace("tagid: ","")
+                		dan = line.findContactsByUserid(id)
+                		sM2(to, "Hai @!", [dan.mid])
+                	except Exception as wk:
+                		#line.sendMessage(to, "Tidak ada id {}".format(str(id)))
+                		line.sendMessage(to, str(wk))
+
+#SC GitLab Profile by Wildan
+#Api by Moe
+
+elif text.lower().startswith("gitlabprofile "):
+                	dan = "[ GitLab Profile ]\n\n"
+                	user = text.replace("gitlabprofile ","")
+                	data = requests.get("http://moeapi.panel.moe/api/gitlab/profile/?apikey=beta&username="+user).json()
+                	if "message" not in data:
+                		dan+="Name: "+str(data["result"]["name"])
+                		dan+="\nUsername: "+str(data["result"]["username"])
+                		dan+="\nBio: "+str(data["result"]["bio"])
+                		dan+="\nSince: "+str(data["result"]["since"])
+                		line.sendImageWithURL(to, data["result"]["image"])
+                		dan+="\n\n[ Finish ]"
+                		line.sendMessage(to, str(dan))
+
+#Usage cek ss dibawah~
+
+# berbagi di bulan yang suci
+# special ramadhan
+# sc murottal per surah
+
+elif cmd.startswith("murottal"):
+   try:
+      sep = msg.text.split(" ")
+      surah = int(text.replace(sep[0] + " ",""))
+      if 0 < surah < 115:
+          if surah not in [2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 16, 17, 18, 20, 21, 23, 26, 37]:
+              if len(str(surah)) == 1:
+                  audionya = "https://audio5.qurancentral.com/mishary-rashid-alafasy/mishary-rashid-alafasy-00" + str(surah) + "-muslimcentral.com.mp3"
+                  client.sendAudioWithURL(to, audionya)
+              elif len(str(surah)) == 2:
+                  audionya = "https://audio5.qurancentral.com/mishary-rashid-alafasy/mishary-rashid-alafasy-0" + str(surah) + "-muslimcentral.com.mp3"
+                  client.sendAudioWithURL(to, audionya)
+              else:
+                  audionya = "https://audio5.qurancentral.com/mishary-rashid-alafasy/mishary-rashid-alafasy-" + str(surah) + "-muslimcentral.com.mp3"
+                  client.sendAudioWithURL(to, audionya)
+          else:
+              client.sendMessage(to, "Surah terlalu panjang")
+      else:
+          client.sendMessage(to, "Quran hanya 114 surah")
+  except Exception as error:
+      client.sendMessage(to, "error\n"+str(error))
+      logError(error)
+
+SC Detect Orang Leave Grup
+Tambahin "leaveMessage" di wait mu
+
+Remote? Make your own (Actress/Model)
+
+if op.type == 15 and set["leaveMessage"] == True:
+        	line.sendImageWithURL(op.param1, "http://dl.profile.line-cdn.net"+line.getContact(op.param2).picturePath)
+        	# Untuk Menambahkan send Contact # line.sendContact(op.param1, op.param2)
+        	sendMention(op.param1, "Yah @!, kenapa out kak :'(", [op.param2])
+
+#example protect pergrup
+
+#op.param1 = grupnya
+#op.param2 = pelaku/member
+#op.param3 = korban nya
+
+#jika punya kalian seperti dibawah ini
+
+wait = {
+    "proectmember" : True
+    }
+    
+if op.type == 19:
+    if wait["protectmember"] == True:
+    
+#ubah if wait["protectmember"] == True: jadi if op.param1 in wait["protectmember"]:
+#atau ubah jadi seperti di bawah ini,,
+
+==================[][][][][][][][]=================
+
+protectmember = []
+
+if op.type == 19:
+    if op.param1 in protectmember:
+    	if op.param2 not in admin + staff + owner + Bots:
+    	wait["blacklist"][op.param2] = True
+        citl.kickoutFromGroup(op.param1,[op.param2])
+        citl.inviteIntoGroup(op.param1,[op.param3])
+    else:
+        pass
+    	
+elif msg.text.lower() == "set":
+	if msg.to in protectmember: md+="Protect [aktif]\n"
+    else: md+="Protect [tidak aktif]"
+    cl.sendText(msg.to,md)
+    
+    
+#kalau pengen smua bisa d aktifin pergrup, buatlah seperti di atas,,
+#protect join di op.type 17
+#protect cancel di op.type 32
+#protect invite di op.type 13
+#protect qr di op.type 11
+
+#Silahkan di Pahami,Maaf jika penjelasan terlalu ribet,
+
+#Resend
+#Welcome Send contact + tag 
+
+#Tambahin di settings "NatNat"
+
+       if op.type == 17:
+        	 if settings["NatNat"] == True:
+        	    dan = client.getContact(op.param2)
+        	    tgb = client.getGroup(op.param1)
+        	    sendMention(op.param1, "Hai @!, Selamat datang di grup {} \nSemoga betah yak".format(str(tgb.name)),[op.param2])        	    
+        	    client.sendContact(op.param1, op.param2)
+
+SC SHORTEN URL
+Api by Hello World
+
+elif text.lower().startswith("shorten "):
+                	dan = text.split("|")
+                	longUrl = dan[0].replace("shorten ","")
+                	alias = dan[1]
+                	apiKey = "YOUR_API_KEY"
+                	data = requests.get("https://short.helloworld404.me/api/?key={}&url={}&custom={}".format(apiKey, longUrl, alias)).json()
+                	if data["error"] is not "0":
+                		tgb = "[ Shorten URL ]\n\n"
+                		tgb +="Long URL: "+str(longUrl)
+                		tgb+= "\nAlias: "+str(alias)
+                		tgb+="\nShort URL: "+str(data["short"])
+                	if data["error"] == "1":
+                		tgb = "[ Shorten URL ]\n\n"
+                		tgb+="Error: "+str(data["msg"])
+                	tgb += "\n\n[ Finish ]"
+                	line.sendMessage(to, str(tgb))
+
+Usage:
+Cek SS dibawah ~
+
+                            elif cmd.startswith("jadwalsholat"):
+                                anunya = text.replace("jadwalsholat ","")
+                                r = requests.get("http://leert.corrykalam.gq/praytime.php?location={}".format(str(anunya)))
+                                data = r.text
+                                data = json.loads(data)
+                                try:
+                                    fine = "[ Jadwal Sholat ]\n\n"
+                                    fine += "Subuh : {}".format(str(data["pray_time"]["subuh"]))
+                                    fine += "\nDhuhur : {}".format(str(data["pray_time"]["dzuhur"]))
+                                    fine += "\nAshar : {}".format(str(data["pray_time"]["ashar"]))
+                                    fine += "\nMaghrib : {}".format(str(data["pray_time"]["maghrib"]))
+                                    fine += "\nIsya : {}".format(str(data["pray_time"]["isha"]))
+                                    fine += "\nImsak : {}".format(str(data["pray_time"]["imsak"]))
+                                    fine += "\n\nTimezone : {}".format(str(data["info"]["timezone"]))
+                                    fine += "\nDate : {}".format(str(data["info"]["date"]))
+                                    fine += "\nLatitude : {}".format(str(data["info"]["latitude"]))
+                                    fine += "\nLongitude : {}".format(str(data["info"]["longitude"]))
+                                    fine += "\nSource : {}".format(str(data["info"]["source"]))
+                                    client.sendMessage(to, str(fine))
+                                except Exception as error:
+                                    client.sendMessage(to,str(error))
+                                    
+   elif text.lower().startswith("pcid"):
+                	dan = text.split("|")
+                	x = line.findContactsByUserid(dan[1])
+                	a = line.getContact(sender)
+                	line.sendMessage(x.mid,"Anda mendapatkan pesan dari "+a.displayName+"\n\n"+dan[2])
+                	line.sendMessage(to,"Sukses mengirim pesan ke "+x.displayName+"\nDari: "+a.displayName+"\nPesan: "+dan[2])
+                
+                # GetToken ala EATER
+# Kecepetan? Tambahin aj time sleep nya mamank
+# Good Work
+# List tokennya?? Tanya om hery aj id : hertot
+# Gw saranin lower semua ngetiknya
+
+import time, requests
+
+
+elif text.lower().startswith("gettoken"):
+    AkangSplit = text.split(" ")
+    KangAppname = text.replace(AkangSplit[0] + " ","")
+    r = requests.session().get("http://api.boteater.icu/{}".format(KangAppname.upper()))
+    data = json.loads(r.text)
+    linkQr = data['result'][0]['linkqr']
+    linkToken = data['result'][0]['linktkn']
+    cl.sendText(msg.to, str(linkQr))
+    time.sleep(2)
+    cl.sendText(msg.to, 'Waiting mamank...')
+    time.sleep(5)
+    r = requests.session().get(str(linkToken))
+    AkangToken = r.text
+    cl.sendText(msg.to,str(AkangToken))
+    
+#    elif text.lower.startswith("spam "):
+    	 syd=text.split("  ")
+         syd=text.replace(syd[0] + "  "," ") 
+         syd=syd.split("~")
+         text=str(syd[0])
+         num=int(syd[1])
+         if num <=100:
+         	  for spammer in range (0,num)
+                     client.sendMessage(to, txt)
+         else:
+         	   client.sendMessage(to, "Hm.. Lumayan kerad!1!1")
+         
+     elif msg.text.lower().startswith("spam "):
+           spl = text.split(" ")
+           for jumlah in range(int(spl[1])):
+           	 client.sendMessage(
+                      to,
+                      text[len(spl[0] + " " spl([1] + " "):]
+                (         
+                #usage: spam [angka] [text]
+                
+                
